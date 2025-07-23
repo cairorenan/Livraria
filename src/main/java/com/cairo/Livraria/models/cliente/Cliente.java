@@ -42,7 +42,7 @@ public class Cliente {
     @JoinColumn(name = "dados_id")
     @JsonBackReference(value = "dados-conta")
     private Dados dados;
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Aluguel> livrosAlugados = new ArrayList<>();
 

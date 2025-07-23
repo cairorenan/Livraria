@@ -8,13 +8,14 @@ import org.springframework.stereotype.Service;
 
 import com.cairo.Livraria.dtos.LivroRequestDTO;
 import com.cairo.Livraria.dtos.LivroResponseDTO;
+import com.cairo.Livraria.exceptions.gestao.LivroNaoEncontradoException;
 import com.cairo.Livraria.models.livro.Livro;
 import com.cairo.Livraria.repositories.LivroRepository;
 
 @Service
 public class LivroService {
     @Autowired
-    LivroRepository livroRepository;
+    LivroRepository livroRepository;  
 
     public void cadastrarLivro(LivroRequestDTO data){
         Optional<Livro> livroExiste = livroRepository.findByNomeAndAutor(data.nome(), data.autor());
@@ -32,8 +33,28 @@ public class LivroService {
         return listadeLivros;
     }
 
+    public Livro buscarLivro(Long livro_id){
+        Optional<Livro> livroOpt = livroRepository.findById(livro_id);
+        if(livroOpt.isPresent()){
+            Livro livro = livroOpt.get();
+            return livro;
+        }else throw new LivroNaoEncontradoException();
+    }
+
     public void deletarLivro(Long id){
         livroRepository.findById(id).ifPresent(livroRepository::delete);
+    }
+
+    public void editarLivro(LivroRequestDTO data,Long livro_id){
+        Optional <Livro> livroOpt = livroRepository.findById(livro_id);
+        if(livroOpt.isPresent()){
+            Livro livro = livroOpt.get();
+            livro.setAutor(data.autor());
+            livro.setNome(data.nome());
+            livro.setImagem(data.imagem());
+            livro.setUnidades(data.unidades());
+            livroRepository.save(livro);
+        }
     }
 
 }
