@@ -36,6 +36,11 @@ docker-compose up --build
 
 ## 🔌Endpoints da API
 
+### Raiz
+```bash
+http://localhost:1917/
+```
+
 ### 📁 Cliente
 
 | Método | Rota                        | Descrição                     |
